@@ -41,9 +41,10 @@ class Client(Base):
         processed_list = list()
         for row in query_result:
             b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
-            s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
-            processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
-        result = '\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
+            s_date = date.fromisoformat(row.start_date).strftime('%d/%m')
+            processed_list.append(f'/id{row.id} <code>{row.fullname} {b_date}</code>     с {s_date}')
+            # processed_list.append(f'<b>{row.fullname}</b>  {b_date}  <code>с {s_date}</code>  /id{row.id}')
+        result = '\n\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
         session.close()
         return result
 
@@ -76,9 +77,9 @@ class Client(Base):
         processed_list = list()
         for row in query_result:
             b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
-            s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
-            processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
-        result = '\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
+            s_date = date.fromisoformat(row.start_date).strftime('%d/%m')
+            processed_list.append(f'/id{row.id} <code>{row.fullname} {b_date}</code>     с {s_date}')
+        result = '\n\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
         session.close()
         return result
 
@@ -169,9 +170,9 @@ class Client(Base):
             processed_list = list()
             for row in query_result:
                 b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
-                s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
-                processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
-            result = '\n'.join(processed_list)
+                s_date = date.fromisoformat(row.start_date).strftime('%d/%m')
+                processed_list.append(f'/id{row.id} <code>{row.fullname} {b_date}</code>     с {s_date}')
+            result = '\n\n'.join(processed_list)
         session.close()
         return result, total_results, client_id, client_status, photo  # will send tuple (result, total_results, row.id). When found 1 record row.id will serve us for buttons,
         # in other cases is useless info we won't consider
