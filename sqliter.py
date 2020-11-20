@@ -40,8 +40,10 @@ class Client(Base):
         count_results = query_result.count()
         processed_list = list()
         for row in query_result:
-            processed_list.append(f'<b>{row.fullname}</b>  {row.birth_date}  <code>({row.start_date})</code>  /id{row.id}')
-        result = '\n'.join(processed_list) + '\n' * 2 + F'Всего: {count_results} чел.'
+            b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
+            s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
+            processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
+        result = '\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
         session.close()
         return result
 
@@ -73,8 +75,10 @@ class Client(Base):
         count_results = query_result.count()
         processed_list = list()
         for row in query_result:
-            processed_list.append(f'<b>{row.fullname}</b>  {row.birth_date}  <code>({row.start_date})</code>  /id{row.id}')
-        result = '\n'.join(processed_list) + '\n' * 2 + F'Всего: {count_results} чел.'
+            b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
+            s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
+            processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
+        result = '\n'.join(processed_list) + '\n\n' + F'Всего: {count_results} чел.'
         session.close()
         return result
 
@@ -164,7 +168,9 @@ class Client(Base):
         else:
             processed_list = list()
             for row in query_result:
-                processed_list.append(f'<b>{row.fullname}</b>  {row.birth_date}  <code>({row.start_date})</code>  /id{row.id}')
+                b_date = date.fromisoformat(row.birth_date).strftime('%d-%b-%Y')
+                s_date = date.fromisoformat(row.start_date).strftime('%d-%b')
+                processed_list.append(f'<b>{row.fullname}</b>  {row.b_date}  <code>с {row.s_date}</code>  /id{row.id}')
             result = '\n'.join(processed_list)
         session.close()
         return result, total_results, client_id, client_status, photo  # will send tuple (result, total_results, row.id). When found 1 record row.id will serve us for buttons,

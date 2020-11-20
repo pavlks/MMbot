@@ -4,7 +4,8 @@ from tabulate import tabulate
 
 
 def time_period(name, birth, start, end):
-    startdate = date.fromisoformat(str(start)) - timedelta(days=1)
+    startdate = date.fromisoformat(str(start)).strftime('%d-%b-%Y')
+    startdate_calc = date.fromisoformat(str(start)) - timedelta(days=1)
     if not end:
         enddate = date.today()
         third_line = ['конец', 'активен']
@@ -12,8 +13,8 @@ def time_period(name, birth, start, end):
         enddate = date.fromisoformat(str(end))
         third_line = ['конец', enddate]
     total_months = int()
-    prev_date = startdate
-    next_date = startdate
+    prev_date = startdate_calc
+    next_date = startdate_calc
     while next_date <= enddate:
         month_days = calendar.monthrange(next_date.year, next_date.month)[1]
         prev_date, next_date = next_date, next_date + timedelta(days=month_days)
