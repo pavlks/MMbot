@@ -4,17 +4,19 @@ from tabulate import tabulate
 
 
 def time_period(name, birth, start, end):
-    startdate = date.fromisoformat(str(start)).strftime('%d-%b-%Y')
-    startdate_calc = date.fromisoformat(str(start)) - timedelta(days=1)
+    b_date = date.fromisoformat(birth).strftime('%d-%b-%Y')
+    startdate_str = date.fromisoformat(str(start)).strftime('%d-%m-%Y')
+    startdate = date.fromisoformat(str(start)) - timedelta(days=1)
     if not end:
         enddate = date.today()
         third_line = ['конец', 'активен']
     else:
         enddate = date.fromisoformat(str(end))
-        third_line = ['конец', enddate]
+        enddate_str = enddate.strftime('%d-%m-%Y')
+        third_line = ['конец', enddate_str]
     total_months = int()
-    prev_date = startdate_calc
-    next_date = startdate_calc
+    prev_date = startdate
+    next_date = startdate
     while next_date <= enddate:
         month_days = calendar.monthrange(next_date.year, next_date.month)[1]
         prev_date, next_date = next_date, next_date + timedelta(days=month_days)
@@ -40,11 +42,11 @@ def time_period(name, birth, start, end):
 
     time_line = f'{months}{days}'
     #first_line = ['дата рожд', birth]
-    second_line = ['начало', startdate]
+    second_line = ['начало', startdate_str]
     forth_line = ['прошло', time_line]
     table = [second_line, third_line, forth_line]
 
-    result_part1 = f'<b>{name}</b> {birth}'
+    result_part1 = f'<b>{name}</b> {b_date}'
     result_part2 = "<code>" + tabulate(table, tablefmt="pretty") + "</code>"
     result = result_part1 + '\n' + result_part2
     return result
