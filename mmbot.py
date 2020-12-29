@@ -4,6 +4,7 @@ import logging
 import urllib.request
 import asyncio
 import calendar
+import re
 
 from day_counter import time_period
 from transliterate import translit
@@ -133,24 +134,19 @@ async def process_startdate(message: types.Message, state: FSMContext):
         fullname = str(nm0).title().strip().replace('  ', ' ')
 
         # Process date of birth
-        dt0 = str(data['dob'])
-        dt1 = dt0.replace('.', ' ').replace(',', ' ').replace('/', ' ').replace('-', ' ').replace('  ', ' ')
-        dt2 = dt1.split()
-        yr = str(dt2[2])
-        if len(yr) == 2:
-            if int(yr) <= int(str(date.today().year)[2:]):
-                byr = int(yr) + 2000
-            else:
-                byr = int(yr) + 1900
+        bdt = re.search(r"(?P<day>\d{1,2})[^a-zA-Z\d](?P<month>\d{1,2})[^a-zA-Z\d](?P<year>\d{2,4})", str(data['dob']))
+        cy = date.today().year % 100
+        by = int(bdt.group('year')) % 100
+        if by > cy:
+            byr = 1900 + by
         else:
-            byr = int(yr)
-        birth_date = date(year=int(byr), month=int(dt2[1]), day=int(dt2[0]))
+            byr = 2000 + by
+        birth_date = date(year=byr, month=int(bdt.group('month')), day=int(bdt.group('day')))
+
 
         # Process date of payment
-        sdt0 = str(data['start_date'])
-        sdt1 = sdt0.replace('.', ' ').replace(',', ' ').replace('/', ' ').replace('-', ' ').replace('  ', ' ')
-        sdt2 = sdt1.split()
-        start_date = date(year=int(sdt2[2]), month=int(sdt2[1]), day=int(sdt2[0]))
+        sdt = re.search(r"(?P<day>\d{1,2})[^a-zA-Z\d](?P<month>\d{1,2})[^a-zA-Z\d](?P<year>\d{2,4})", str(data['start_date']))
+        start_date = date(year=int(sdt.group('year')), month=int(sdt.group('month')), day=int(sdt.group('day')))
 
         # Process image
         file_id = data['file_id']
