@@ -34,7 +34,7 @@ class Client(Base):
         Session = sessionmaker(bind=engine)
         session = Session()
         if oper_id == 789561316:
-            query_result = session.query(Client)
+            query_result = session.query(Client).filter(Client.operator_id == 822653560)
         else:
             query_result = session.query(Client).filter(Client.operator_id == oper_id)
         count_results = query_result.count()
@@ -69,7 +69,7 @@ class Client(Base):
         Session = sessionmaker(bind=engine)
         session = Session()
         if oper_id == 789561316:
-            query_result = session.query(Client).filter(Client.is_active == 1)
+            query_result = session.query(Client).filter(Client.operator_id == 822653560).filter(Client.is_active == 1)
         else:
             query_result = session.query(Client).filter(Client.operator_id == oper_id).filter(Client.is_active == 1)
         count_results = query_result.count()
